@@ -238,7 +238,7 @@
   width: min(92vw, 480px);
   border-radius: var(--lg-radius-sheet);
   padding: 1.5rem;
-  transition: bottom 480ms var(--lg-spring);
+  transition: bottom 560ms var(--lg-spring-bouncy);
 }
 .lg-sheet.open { bottom: max(1rem, env(safe-area-inset-bottom)); }
 .lg-sheet-grabber {
@@ -319,3 +319,91 @@
   transition: opacity 240ms ease;
 }
 .lg-lens:hover::before { opacity: 1; }
+
+/* ============ motion: liquid, not fades ============ */
+
+/* ---- morphing background blobs: the aurora is alive ---- */
+.lg-blob {
+  position: absolute;
+  background: radial-gradient(circle at 50% 50%,
+      var(--c1), var(--c2) 58%, transparent 72%);
+  filter: blur(38px) saturate(1.35);
+  border-radius: 42% 58% 63% 37% / 45% 42% 58% 55%;
+  animation: lg-morph 16s ease-in-out infinite alternate;
+  will-change: border-radius, transform;
+}
+@keyframes lg-morph {
+  0% {
+    border-radius: 42% 58% 63% 37% / 45% 42% 58% 55%;
+    transform: translate3d(0, 0, 0) scale(1) rotate(0deg);
+  }
+  50% {
+    border-radius: 64% 36% 42% 58% / 54% 60% 40% 46%;
+    transform: translate3d(7%, -9%, 0) scale(1.18) rotate(45deg);
+  }
+  100% {
+    border-radius: 36% 64% 52% 48% / 42% 38% 62% 58%;
+    transform: translate3d(-7%, 7%, 0) scale(0.9) rotate(-35deg);
+  }
+}
+[data-theme="dark"] .lg-blob {
+  filter: blur(38px) saturate(1.1) brightness(0.5);
+}
+
+/* ---- gooey indicator: stretches like liquid between selections ----
+   Markup: a .lg-goo-track (aria-hidden) holding two .lg-goo-blob spans
+   inside a .lg-tabbar-goo / .lg-segmented-goo container. JS positions
+   the blobs; the leader snaps, the trailer lags, the SVG goo filter
+   melts them together mid-travel. Needs the #lg-goo filter defs. */
+.lg-goo-track {
+  position: absolute;
+  inset: 8px;
+  filter: url(#lg-goo);
+  pointer-events: none;
+}
+.lg-segmented-goo .lg-goo-track { inset: 4px; }
+.lg-goo-blob {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 80px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.55);
+}
+.lg-goo-leader {
+  transition: left 420ms var(--lg-spring-bouncy),
+              width 420ms var(--lg-spring-bouncy);
+}
+.lg-goo-trailer {
+  transition: left 420ms var(--lg-spring-bouncy) 70ms,
+              width 420ms var(--lg-spring-bouncy) 70ms;
+}
+[data-theme="dark"] .lg-goo-blob {
+  background: rgba(255, 255, 255, 0.16);
+}
+/* the goo IS the indicator — kill the old static pill */
+.lg-tabbar-goo .lg-tab[aria-selected="true"],
+.lg-segmented-goo button[aria-pressed="true"] {
+  background: transparent;
+  box-shadow: none;
+}
+.lg-tabbar-goo .lg-tab[aria-selected="true"] {
+  color: var(--lg-on-glass);
+}
+.lg-segmented-goo button[aria-pressed="true"] {
+  color: var(--lg-on-glass);
+  font-weight: 700;
+}
+
+/* ---- jelly: squash and stretch on press ---- */
+.lg-jelly:active {
+  animation: lg-jelly-press 550ms var(--lg-spring-jelly);
+}
+@keyframes lg-jelly-press {
+  0%   { transform: scale(1, 1); }
+  25%  { transform: scale(1.18, 0.8); }
+  50%  { transform: scale(0.9, 1.1); }
+  70%  { transform: scale(1.05, 0.95); }
+  100% { transform: scale(1, 1); }
+}

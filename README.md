@@ -49,6 +49,20 @@ Or vendor the two CSS files. No build step, no dependencies. A few lines of JS i
 
 Plus `.lg-sheen` (light sweep on hover) and `.lg-lens` (specular highlight follows the pointer).
 
+## Motion — liquid, not fades
+
+- **Gooey indicators**: tab bar + segmented thumbs are two blobs under an SVG
+  goo filter (`#lg-goo`). The leader snaps to the new tab, the trailer lags
+  70ms, and the filter melts them together mid-travel — the pill *stretches*
+  like liquid instead of fading. Mark the container `.lg-tabbar-goo` /
+  `.lg-segmented-goo` and call `moveGoo(track, el)` on selection.
+- **Jelly press**: `.lg-jelly` squash-and-stretches on `:active`
+  (1.18×0.8 → 0.9×1.1 → settle) with a wobble spring.
+- **Living background**: aurora blobs morph `border-radius` + drift on
+  14–22s loops so the backdrop never sits still.
+- **Sheet**: opens on an overshoot spring (`--lg-spring-bouncy`).
+- All motion respects `prefers-reduced-motion`.
+
 ## Honest limitations
 
 - Real Liquid Glass refracts dynamically per-pixel; CSS `backdrop-filter` blurs but doesn't bend light. The approximation reads correctly at a glance.

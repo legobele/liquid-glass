@@ -50,6 +50,8 @@
 
   /* ---- motion: springy, physical ---- */
   --lg-spring: cubic-bezier(0.32, 0.72, 0, 1);
+  --lg-spring-bouncy: cubic-bezier(0.34, 1.45, 0.64, 1);  /* overshoots */
+  --lg-spring-jelly: cubic-bezier(0.34, 1.8, 0.64, 1);   /* big wobble */
   --lg-speed: 320ms;
 
   /* ---- demo backdrop: rich content for glass to float over ---- */
@@ -108,5 +110,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .lg-aurora { animation: none !important; }
+  .lg-blob { animation: none !important; }
+  .lg-goo-blob { transition: none !important; }
   * { transition-duration: 0.01ms !important; }
 }

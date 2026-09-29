@@ -15,30 +15,16 @@
     color: var(--lg-ink);
     min-height: 200vh;
   }
-  /* rich content for the glass to float over */
+  /* rich content for the glass to float over — living blobs */
   .lg-aurora {
     position: fixed;
-    inset: -20%;
+    inset: -12vmax;
     z-index: -1;
-    background:
-      radial-gradient(38% 42% at 18% 22%, var(--lg-aurora-3) 0%, transparent 70%),
-      radial-gradient(42% 46% at 82% 18%, var(--lg-aurora-2) 0%, transparent 70%),
-      radial-gradient(46% 50% at 55% 85%, var(--lg-aurora-1) 0%, transparent 70%),
-      radial-gradient(30% 34% at 88% 78%, var(--lg-aurora-4) 0%, transparent 70%),
-      linear-gradient(160deg, #e8ecff, #f6e9ff 55%, #e9f6ff);
-    filter: saturate(1.25);
-    animation: lg-drift 26s ease-in-out infinite alternate;
+    overflow: hidden;
+    background: linear-gradient(160deg, #e8ecff, #f6e9ff 55%, #e9f6ff);
   }
   [data-theme="dark"] .lg-aurora {
-    background:
-      radial-gradient(38% 42% at 18% 22%, #5b2a86 0%, transparent 70%),
-      radial-gradient(42% 46% at 82% 18%, #0b3b5c 0%, transparent 70%),
-      radial-gradient(46% 50% at 55% 85%, #2a1a5e 0%, transparent 70%),
-      radial-gradient(30% 34% at 88% 78%, #5c3a0b 0%, transparent 70%),
-      linear-gradient(160deg, #0b0b14, #14101f 55%, #0b1420);
-  }
-  @keyframes lg-drift {
-    to { transform: translate3d(4%, -3%, 0) scale(1.06); }
+    background: linear-gradient(160deg, #0b0b14, #14101f 55%, #0b1420);
   }
   .page { max-width: 720px; margin: 0 auto; padding: 7.5rem 1.25rem 12rem; }
   .stack { display: grid; gap: 1.25rem; margin-top: 2rem; }
@@ -54,7 +40,24 @@
 </head>
 <body>
 
-<div class="lg-aurora" aria-hidden="true"></div>
+<!-- goo filter: melts blobs together — the liquid in liquid glass -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="lg-goo">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"/>
+      <feColorMatrix in="blur" mode="matrix"
+        values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo"/>
+      <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+    </filter>
+  </defs>
+</svg>
+
+<div class="lg-aurora" aria-hidden="true">
+  <span class="lg-blob" style="--c1:#ff5ca8; --c2:#ff8ac2; width:58vmax; height:58vmax; left:-14vmax; top:-16vmax;"></span>
+  <span class="lg-blob" style="--c1:#00d4ff; --c2:#5ce1ff; width:52vmax; height:52vmax; right:-12vmax; top:-6vmax; animation-duration:19s; animation-delay:-7s;"></span>
+  <span class="lg-blob" style="--c1:#7c5cff; --c2:#a58bff; width:60vmax; height:60vmax; left:8vmax; bottom:-20vmax; animation-duration:22s; animation-delay:-12s;"></span>
+  <span class="lg-blob" style="--c1:#ffb347; --c2:#ffd08a; width:40vmax; height:40vmax; right:-6vmax; bottom:-8vmax; animation-duration:14s; animation-delay:-4s;"></span>
+</div>
 
 <!-- functional layer: floating toolbar -->
 <header class="lg-float lg-toolbar lg-glass lg-lens" id="toolbar">
@@ -65,7 +68,7 @@
   <button class="lg-icon-btn" aria-label="Search" style="border:0">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
   </button>
-  <button class="lg-btn lg-btn-solid lg-sheen" id="sheetOpen" style="padding:.6rem 1.2rem; font-size:.875rem">Present</button>
+  <button class="lg-btn lg-btn-solid lg-sheen lg-jelly" id="sheetOpen" style="padding:.6rem 1.2rem; font-size:.875rem">Present</button>
 </header>
 
 <button class="lg-icon-btn lg-glass theme-fab" id="themeToggle" aria-label="Toggle theme">◐</button>
@@ -97,18 +100,23 @@
     </div>
   </div>
 
-  <p class="demo-label">Controls · solid fills sit ON glass</p>
+  <p class="demo-label">Controls · solid fills sit ON glass · jelly on press</p>
   <div class="row">
-    <button class="lg-btn lg-glass">Glass button</button>
-    <button class="lg-btn lg-btn-solid">Solid on glass</button>
+    <button class="lg-btn lg-glass lg-jelly">Glass button</button>
+    <button class="lg-btn lg-btn-solid lg-jelly">Solid on glass</button>
   </div>
 
-  <p class="demo-label">Segmented · glass track, solid thumb</p>
-  <div class="lg-segmented lg-glass" role="group" aria-label="Variant">
+  <p class="demo-label">Segmented · the thumb is liquid</p>
+  <div class="lg-segmented lg-glass lg-segmented-goo" role="group" aria-label="Variant" id="segmented" style="position:relative">
+    <div class="lg-goo-track" aria-hidden="true">
+      <span class="lg-goo-blob lg-goo-leader"></span>
+      <span class="lg-goo-blob lg-goo-trailer"></span>
+    </div>
     <button aria-pressed="true">Regular</button>
     <button aria-pressed="false">Clear</button>
     <button aria-pressed="false">Tinted</button>
   </div>
+  <p class="lg-caption" style="margin-top:1rem">Tab the controls above — the indicator doesn't fade between states, it <em>stretches</em> like liquid. That's an SVG goo filter melting two blobs together mid-travel.</p>
 
   <div class="spacer">
     <p class="lg-body">keep scrolling —<br>the tab bar stays floating, the content peeks through ↓</p>
@@ -126,8 +134,12 @@
   <div class="spacer"><p class="lg-caption">— end of content —</p></div>
 </main>
 
-<!-- functional layer: floating tab bar -->
-<nav class="lg-float lg-tabbar lg-glass lg-lens" aria-label="Demo tabs" id="tabbar">
+<!-- functional layer: floating tab bar with gooey indicator -->
+<nav class="lg-float lg-tabbar lg-glass lg-lens lg-tabbar-goo" aria-label="Demo tabs" id="tabbar">
+  <div class="lg-goo-track" aria-hidden="true">
+    <span class="lg-goo-blob lg-goo-leader"></span>
+    <span class="lg-goo-blob lg-goo-trailer"></span>
+  </div>
   <button class="lg-tab" aria-selected="true">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
     Home
@@ -161,17 +173,41 @@
     root.dataset.theme = root.dataset.theme === 'light' ? 'dark' : 'light';
   });
   // tabs
+  const tabbar = document.getElementById('tabbar');
+  const tabTrack = tabbar.querySelector('.lg-goo-track');
   document.querySelectorAll('.lg-tab').forEach(t =>
     t.addEventListener('click', () => {
       document.querySelectorAll('.lg-tab').forEach(x => x.setAttribute('aria-selected', 'false'));
       t.setAttribute('aria-selected', 'true');
+      moveGoo(tabTrack, t);
     }));
   // segmented
-  document.querySelectorAll('.lg-segmented button').forEach(b =>
+  const segmented = document.getElementById('segmented');
+  const segTrack = segmented.querySelector('.lg-goo-track');
+  segmented.querySelectorAll('button').forEach(b =>
     b.addEventListener('click', () => {
-      document.querySelectorAll('.lg-segmented button').forEach(x => x.setAttribute('aria-pressed', 'false'));
+      segmented.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', 'false'));
       b.setAttribute('aria-pressed', 'true');
+      moveGoo(segTrack, b);
     }));
+  // gooey indicator: leader snaps, trailer lags, filter melts them mid-travel
+  function moveGoo(track, el) {
+    const tr = track.getBoundingClientRect();
+    const r = el.getBoundingClientRect();
+    track.querySelectorAll('.lg-goo-blob').forEach(b => {
+      b.style.left = (r.left - tr.left) + 'px';
+      b.style.width = r.width + 'px';
+    });
+  }
+  function initGoo() {
+    const sel = tabbar.querySelector('.lg-tab[aria-selected="true"]');
+    if (sel) moveGoo(tabTrack, sel);
+    const pressed = segmented.querySelector('button[aria-pressed="true"]');
+    if (pressed) moveGoo(segTrack, pressed);
+  }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(initGoo);
+  window.addEventListener('load', initGoo);
+  window.addEventListener('resize', initGoo);
   // sheet
   const sheet = document.getElementById('sheet'), scrim = document.getElementById('scrim');
   const open = v => { sheet.classList.toggle('open', v); scrim.classList.toggle('open', v); };
