@@ -1,0 +1,309 @@
+/* ==========================================================================
+   LIQUID GLASS — components
+   Requires tokens.css. All classes are .lg- prefixed.
+   Doctrine (from the HIG): glass floats ABOVE content in the functional
+   layer. Content scrolls beneath and peeks through. Never glass-on-glass.
+   ========================================================================== */
+
+/* ============ type ============ */
+
+.lg-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: var(--lg-ink);
+}
+.lg-title-1 { font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.02; }
+.lg-title-2 { font-size: clamp(1.5rem, 3vw, 2.25rem); line-height: 1.1; }
+.lg-title-3 { font-size: 1.25rem; line-height: 1.2; }
+
+.lg-body {
+  font-family: var(--font-system);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  color: var(--lg-ink-soft);
+  margin: 0;
+  max-width: 60ch;
+}
+
+.lg-caption {
+  font-family: var(--font-system);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--lg-ink-faint);
+  margin: 0;
+}
+
+/* ============ the floating functional layer ============ */
+
+.lg-float {
+  position: fixed;
+  z-index: 50;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* ---- toolbar: floats at top, content scrolls under it ---- */
+.lg-toolbar {
+  top: max(1rem, env(safe-area-inset-top));
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: var(--lg-radius-pill);
+  max-width: min(92vw, 560px);
+  width: max-content;
+}
+.lg-toolbar .lg-toolbar-title {
+  font-family: var(--font-system);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0 0.75rem;
+  color: var(--lg-on-glass);
+  white-space: nowrap;
+}
+
+/* ---- tab bar: the classic — floats above content ---- */
+.lg-tabbar {
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  border-radius: var(--lg-radius-pill);
+}
+.lg-tab {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-system);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--lg-ink-soft);
+  padding: 0.65rem 1.1rem;
+  border-radius: var(--lg-radius-pill);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: background var(--lg-speed) var(--lg-spring),
+              color var(--lg-speed) var(--lg-spring),
+              transform var(--lg-speed) var(--lg-spring);
+  white-space: nowrap;
+}
+.lg-tab svg { width: 18px; height: 18px; }
+.lg-tab:hover { color: var(--lg-on-glass); }
+.lg-tab:active { transform: scale(0.94); }
+/* solid fill ON glass: the selected tab */
+.lg-tab[aria-selected="true"] {
+  background: rgba(255, 255, 255, 0.55);
+  color: var(--lg-on-glass);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8),
+              0 2px 10px rgba(10, 10, 30, 0.12);
+}
+[data-theme="dark"] .lg-tab[aria-selected="true"] {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* ---- dock: app icons on glass ---- */
+.lg-dock {
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.9rem 1.2rem;
+  border-radius: 34px;
+}
+.lg-dock-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 15px;
+  display: grid;
+  place-items: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.5),
+              0 4px 14px rgba(10, 10, 30, 0.18);
+  transition: transform var(--lg-speed) var(--lg-spring);
+}
+.lg-dock-icon:hover { transform: scale(1.14) translateY(-4px); }
+.lg-dock-icon:active { transform: scale(0.92); }
+
+/* ============ controls ============ */
+
+/* capsule button: concentric with its container */
+.lg-btn {
+  appearance: none;
+  border: 1px solid var(--lg-rim);
+  font-family: var(--font-system);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--lg-on-glass);
+  padding: 0.8rem 1.6rem;
+  border-radius: var(--lg-radius-pill);
+  cursor: pointer;
+  transition: transform var(--lg-speed) var(--lg-spring),
+              box-shadow var(--lg-speed) var(--lg-spring);
+}
+.lg-btn:hover { transform: translateY(-1px); }
+.lg-btn:active { transform: scale(0.96); }
+/* solid fills belong ON glass */
+.lg-btn-solid {
+  background: var(--lg-on-glass);
+  color: var(--lg-paper-on, #fff);
+  border-color: transparent;
+  box-shadow: 0 6px 20px rgba(10, 10, 30, 0.25);
+}
+[data-theme="dark"] .lg-btn-solid { color: #0b0b10; }
+
+.lg-icon-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  border: 1px solid var(--lg-rim);
+  color: var(--lg-on-glass);
+  background: transparent;
+  transition: transform var(--lg-speed) var(--lg-spring),
+              background var(--lg-speed) var(--lg-spring);
+}
+.lg-icon-btn:hover { background: rgba(255, 255, 255, 0.22); }
+.lg-icon-btn:active { transform: scale(0.9); }
+.lg-icon-btn svg { width: 20px; height: 20px; }
+
+/* segmented control: glass track, solid thumb */
+.lg-segmented {
+  display: inline-flex;
+  padding: 4px;
+  gap: 2px;
+  border-radius: var(--lg-radius-pill);
+}
+.lg-segmented button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-system);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--lg-ink-soft);
+  padding: 0.55rem 1.2rem;
+  border-radius: var(--lg-radius-pill);
+  cursor: pointer;
+  transition: all var(--lg-speed) var(--lg-spring);
+}
+.lg-segmented button[aria-pressed="true"] {
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--lg-on-glass);
+  box-shadow: 0 2px 10px rgba(10, 10, 30, 0.14),
+              inset 0 1px 1px rgba(255, 255, 255, 0.8);
+}
+[data-theme="dark"] .lg-segmented button[aria-pressed="true"] {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+/* ============ sheet: larger radii, floats over everything ============ */
+
+.lg-scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 8, 14, 0.32);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  z-index: 90;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--lg-speed) ease;
+}
+.lg-scrim.open { opacity: 1; pointer-events: auto; }
+
+.lg-sheet {
+  position: fixed;
+  z-index: 100;
+  left: 50%;
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  transform: translateX(-50%) translateY(120%);
+  width: min(92vw, 480px);
+  border-radius: var(--lg-radius-sheet);
+  padding: 1.5rem;
+  transition: transform 480ms var(--lg-spring);
+}
+.lg-sheet.open { transform: translateX(-50%) translateY(0); }
+.lg-sheet-grabber {
+  width: 40px;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(120, 120, 140, 0.5);
+  margin: 0 auto 1.25rem;
+}
+
+/* ============ content layer: standard materials only ============ */
+
+.lg-card {
+  border-radius: var(--lg-radius-card);
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 8px 28px rgba(10, 10, 30, 0.1);
+}
+.lg-card h3 { margin: 0 0 0.5rem; }
+
+/* list rows: separated by spacing, not glass */
+.lg-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem 1.1rem;
+  border-radius: var(--lg-radius-control);
+  transition: background 160ms ease;
+}
+.lg-row:hover { background: rgba(255, 255, 255, 0.5); }
+[data-theme="dark"] .lg-row:hover { background: rgba(255, 255, 255, 0.07); }
+.lg-row-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  font-size: 1.25rem;
+  flex: none;
+}
+
+/* ============ specular sweep: light plays across glass ============ */
+
+.lg-sheen { position: relative; overflow: hidden; }
+.lg-sheen::after {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background: linear-gradient(105deg,
+      transparent 40%,
+      rgba(255, 255, 255, 0.28) 50%,
+      transparent 60%);
+  transform: translateX(-70%);
+  pointer-events: none;
+}
+.lg-sheen:hover::after {
+  animation: lg-sheen 900ms var(--lg-spring);
+}
+@keyframes lg-sheen {
+  to { transform: translateX(70%); }
+}
+
+/* pointer-tracked highlight (JS sets --mx / --my) */
+.lg-lens { position: relative; }
+.lg-lens::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 0%),
+      rgba(255, 255, 255, 0.35),
+      transparent 65%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 240ms ease;
+}
+.lg-lens:hover::before { opacity: 1; }

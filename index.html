@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Liquid Glass — HTML adaptation</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: var(--font-system);
+    color: var(--lg-ink);
+    min-height: 200vh;
+    overflow-x: hidden;
+  }
+  /* rich content for the glass to float over */
+  .lg-aurora {
+    position: fixed;
+    inset: -20%;
+    z-index: -1;
+    background:
+      radial-gradient(38% 42% at 18% 22%, var(--lg-aurora-3) 0%, transparent 70%),
+      radial-gradient(42% 46% at 82% 18%, var(--lg-aurora-2) 0%, transparent 70%),
+      radial-gradient(46% 50% at 55% 85%, var(--lg-aurora-1) 0%, transparent 70%),
+      radial-gradient(30% 34% at 88% 78%, var(--lg-aurora-4) 0%, transparent 70%),
+      linear-gradient(160deg, #e8ecff, #f6e9ff 55%, #e9f6ff);
+    filter: saturate(1.25);
+    animation: lg-drift 26s ease-in-out infinite alternate;
+  }
+  [data-theme="dark"] .lg-aurora {
+    background:
+      radial-gradient(38% 42% at 18% 22%, #5b2a86 0%, transparent 70%),
+      radial-gradient(42% 46% at 82% 18%, #0b3b5c 0%, transparent 70%),
+      radial-gradient(46% 50% at 55% 85%, #2a1a5e 0%, transparent 70%),
+      radial-gradient(30% 34% at 88% 78%, #5c3a0b 0%, transparent 70%),
+      linear-gradient(160deg, #0b0b14, #14101f 55%, #0b1420);
+  }
+  @keyframes lg-drift {
+    to { transform: translate3d(4%, -3%, 0) scale(1.06); }
+  }
+  .page { max-width: 720px; margin: 0 auto; padding: 7.5rem 1.25rem 12rem; }
+  .stack { display: grid; gap: 1.25rem; margin-top: 2rem; }
+  .demo-label {
+    font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.14em; color: var(--lg-ink-faint); margin: 2.5rem 0 -0.5rem;
+  }
+  .row { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; }
+  .spacer { height: 60vh; display: grid; place-items: center; }
+  .spacer p { text-align: center; }
+  .theme-fab { position: fixed; top: max(1rem, env(safe-area-inset-top)); right: 1rem; z-index: 60; }
+</style>
+</head>
+<body>
+
+<div class="lg-aurora" aria-hidden="true"></div>
+
+<!-- functional layer: floating toolbar -->
+<header class="lg-float lg-toolbar lg-glass lg-lens" id="toolbar">
+  <button class="lg-icon-btn" aria-label="Back" style="border:0">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
+  <span class="lg-toolbar-title">Liquid Glass</span>
+  <button class="lg-icon-btn" aria-label="Search" style="border:0">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+  </button>
+  <button class="lg-btn lg-btn-solid lg-sheen" id="sheetOpen" style="padding:.6rem 1.2rem; font-size:.875rem">Present</button>
+</header>
+
+<button class="lg-icon-btn lg-glass theme-fab" id="themeToggle" aria-label="Toggle theme">◐</button>
+
+<main class="page">
+  <p class="lg-caption">AN HTML ADAPTATION · HIG 2025</p>
+  <h1 class="lg-title lg-title-1" style="margin:.5rem 0 1rem">Glass floats.<br>Content flows.</h1>
+  <p class="lg-body">Apple's rule, honored here: Liquid Glass lives only in the floating functional layer — toolbars, tab bars, docks, sheets. Everything you read sits on standard materials. Scroll: the aurora slides <em>under</em> the toolbar and the tab bar, and the glass bends it.</p>
+
+  <p class="demo-label">Content layer · standard materials, never glass</p>
+  <div class="stack">
+    <article class="lg-card lg-material">
+      <h3 class="lg-title lg-title-3">Cards don't get glass</h3>
+      <p class="lg-body" style="font-size:.95rem">The HIG is explicit: putting Liquid Glass in the content layer muddies the hierarchy. Cards, lists and app backgrounds use plain frosted materials instead.</p>
+    </article>
+    <div class="lg-card lg-material" style="padding:.5rem">
+      <div class="lg-row">
+        <span class="lg-row-icon" style="background:linear-gradient(135deg,#7c5cff,#00d4ff)">✦</span>
+        <div><p class="lg-body" style="font-weight:600;color:var(--lg-ink)">Refraction</p><p class="lg-caption">The material bends what's beneath it</p></div>
+      </div>
+      <div class="lg-row">
+        <span class="lg-row-icon" style="background:linear-gradient(135deg,#ff5ca8,#ffb347)">◍</span>
+        <div><p class="lg-body" style="font-weight:600;color:var(--lg-ink)">Specular edge</p><p class="lg-caption">Light catches the rim, top edge brightest</p></div>
+      </div>
+      <div class="lg-row">
+        <span class="lg-row-icon" style="background:linear-gradient(135deg,#00d4ff,#7c5cff)">⬢</span>
+        <div><p class="lg-body" style="font-weight:600;color:var(--lg-ink)">Concentric capsules</p><p class="lg-caption">Controls get rounder inside their containers</p></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="demo-label">Controls · solid fills sit ON glass</p>
+  <div class="row">
+    <button class="lg-btn lg-glass">Glass button</button>
+    <button class="lg-btn lg-btn-solid">Solid on glass</button>
+  </div>
+
+  <p class="demo-label">Segmented · glass track, solid thumb</p>
+  <div class="lg-segmented lg-glass" role="group" aria-label="Variant">
+    <button aria-pressed="true">Regular</button>
+    <button aria-pressed="false">Clear</button>
+    <button aria-pressed="false">Tinted</button>
+  </div>
+
+  <div class="spacer">
+    <p class="lg-body">keep scrolling —<br>the tab bar stays floating, the content peeks through ↓</p>
+  </div>
+
+  <p class="demo-label">Clear variant · media backdrops only</p>
+  <div class="lg-card" style="padding:0; overflow:hidden; border:0">
+    <div style="background:linear-gradient(120deg,#ff5ca8,#7c5cff 50%,#00d4ff); padding:3rem 1.5rem; position:relative">
+      <div class="lg-glass-clear lg-lens" style="border-radius:var(--lg-radius-pill); padding:1rem 1.5rem; display:inline-block">
+        <p class="lg-body" style="color:#fff; font-weight:600; margin:0">Clear glass over rich media</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="spacer"><p class="lg-caption">— end of content —</p></div>
+</main>
+
+<!-- functional layer: floating tab bar -->
+<nav class="lg-float lg-tabbar lg-glass lg-lens" aria-label="Demo tabs" id="tabbar">
+  <button class="lg-tab" aria-selected="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
+    Home
+  </button>
+  <button class="lg-tab" aria-selected="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+    Search
+  </button>
+  <button class="lg-tab" aria-selected="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4z"/></svg>
+    Saved
+  </button>
+</nav>
+
+<!-- sheet -->
+<div class="lg-scrim" id="scrim"></div>
+<section class="lg-sheet lg-glass" id="sheet" aria-label="Demo sheet">
+  <div class="lg-sheet-grabber"></div>
+  <h2 class="lg-title lg-title-2" style="margin-bottom:.5rem">Sheets float too</h2>
+  <p class="lg-body" style="font-size:.95rem; margin-bottom:1.25rem">Larger corner radii than controls, one glass layer at a time — never glass on glass.</p>
+  <div class="row">
+    <button class="lg-btn lg-btn-solid" id="sheetClose">Done</button>
+    <button class="lg-btn lg-glass">Secondary</button>
+  </div>
+</section>
+
+<script>
+  // theme
+  const root = document.documentElement;
+  document.getElementById('themeToggle').addEventListener('click', () => {
+    root.dataset.theme = root.dataset.theme === 'light' ? 'dark' : 'light';
+  });
+  // tabs
+  document.querySelectorAll('.lg-tab').forEach(t =>
+    t.addEventListener('click', () => {
+      document.querySelectorAll('.lg-tab').forEach(x => x.setAttribute('aria-selected', 'false'));
+      t.setAttribute('aria-selected', 'true');
+    }));
+  // segmented
+  document.querySelectorAll('.lg-segmented button').forEach(b =>
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.lg-segmented button').forEach(x => x.setAttribute('aria-pressed', 'false'));
+      b.setAttribute('aria-pressed', 'true');
+    }));
+  // sheet
+  const sheet = document.getElementById('sheet'), scrim = document.getElementById('scrim');
+  const open = v => { sheet.classList.toggle('open', v); scrim.classList.toggle('open', v); };
+  document.getElementById('sheetOpen').addEventListener('click', () => open(true));
+  document.getElementById('sheetClose').addEventListener('click', () => open(false));
+  scrim.addEventListener('click', () => open(false));
+  // pointer-tracked specular highlight on glass
+  document.querySelectorAll('.lg-lens').forEach(el =>
+    el.addEventListener('pointermove', e => {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+      el.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+    }));
+</script>
+</body>
+</html>
