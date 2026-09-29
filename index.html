@@ -36,6 +36,11 @@
   .spacer { height: 60vh; display: grid; place-items: center; }
   .spacer p { text-align: center; }
   .theme-fab { position: fixed; top: max(1rem, env(safe-area-inset-top)); right: 1rem; z-index: 60; }
+  /* narrow screens: the toolbar pill runs full-width, so the fab
+     docks above the tab bar instead of sitting on the toolbar */
+  @media (max-width: 640px) {
+    .theme-fab { top: auto; bottom: 6.5rem; }
+  }
 </style>
 </head>
 <body>
