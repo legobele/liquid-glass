@@ -40,8 +40,14 @@
 .lg-float {
   position: fixed;
   z-index: 50;
-  left: 50%;
-  transform: translateX(-50%);
+  /* centered WITHOUT transform: fixed + transform + backdrop-filter
+     is broken in Chromium — the element scrolls with the page
+     instead of floating. margin auto does the same job safely. */
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  width: fit-content;
+  max-width: calc(100vw - 2rem);
 }
 
 /* ---- toolbar: floats at top, content scrolls under it ---- */
@@ -223,15 +229,18 @@
 .lg-sheet {
   position: fixed;
   z-index: 100;
-  left: 50%;
-  bottom: max(1rem, env(safe-area-inset-bottom));
-  transform: translateX(-50%) translateY(120%);
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  /* slides via bottom, not transform — same Chromium
+     fixed+transform+backdrop-filter issue as .lg-float */
+  bottom: -120%;
   width: min(92vw, 480px);
   border-radius: var(--lg-radius-sheet);
   padding: 1.5rem;
-  transition: transform 480ms var(--lg-spring);
+  transition: bottom 480ms var(--lg-spring);
 }
-.lg-sheet.open { transform: translateX(-50%) translateY(0); }
+.lg-sheet.open { bottom: max(1rem, env(safe-area-inset-bottom)); }
 .lg-sheet-grabber {
   width: 40px;
   height: 5px;
