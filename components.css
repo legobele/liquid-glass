@@ -301,8 +301,11 @@
   to { transform: translateX(70%); }
 }
 
-/* pointer-tracked highlight (JS sets --mx / --my) */
-.lg-lens { position: relative; }
+/* pointer-tracked highlight (JS sets --mx / --my).
+   position:relative only when not already fixed: .lg-float sets
+   position:fixed earlier in this file, and a later equal-specificity
+   position:relative would override it and break the float. */
+.lg-lens:not(.lg-float) { position: relative; }
 .lg-lens::before {
   content: "";
   position: absolute;
