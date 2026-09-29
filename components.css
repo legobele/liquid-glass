@@ -40,9 +40,9 @@
 .lg-float {
   position: fixed;
   z-index: 50;
-  /* centered WITHOUT transform: fixed + transform + backdrop-filter
-     is broken in Chromium — the element scrolls with the page
-     instead of floating. margin auto does the same job safely. */
+  /* centered with margin auto (no transform needed).
+     NOTE: nothing later in this file may set position on .lg-float
+     members — .lg-lens is scoped with :not(.lg-float) for this reason. */
   left: 0;
   right: 0;
   margin-inline: auto;
